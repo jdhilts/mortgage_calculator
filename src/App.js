@@ -58,21 +58,22 @@ const App =(props)=> {
         <Form className='form'>
         <FormikControl
         control='input' 
+        autoFocus
         type='number' 
         name='p'
-        placeHolder='Principal'/>
+        placeholder='Principal'/>
 
         <FormikControl     
         control='input' 
         type='number' 
         name='r'
-        placeHolder='Interest Rate'/>
+        placeholder='Interest Rate'/>
 
         <FormikControl       
         control='input' 
         type='number' 
         name='t'
-         placeHolder='Term'/>
+        placeholder='Term'/>
 
         <button      
         type='submit'
