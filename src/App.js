@@ -16,14 +16,31 @@ const App =(props)=> {
   let [m, setMortgage] = useState('')
 
   const validationSchema = Yup.object({
-    p: Yup.number().required('Required!'),
-    r: Yup.number().required('Required!'),
-    t: Yup.number().required('Required!')
+    p: Yup.number()
+    .min(1, 'Principal must be greater than or equal to 1.')
+    .required('Required!')
+    .typeError('Pricipal must be greater than or equal to 1.'),
+
+    r: Yup.number()
+    .min(1, 'Rate must be greater than or equal to 1')
+    .required('Required!')
+    .typeError('Rate must be greater than or equal to 1.'),
+
+    t: Yup.number()
+    .min(10, 'Term must be 10 - 50 years.')
+    .max(50, 'Term must be 10 - 50 years.')
+    .required('Required!')
+    .typeError('Term must be 10 - 50 years.'),
   })
 
+  // Calculating the monthly payments
   const onSubmit =(values, {resetForm})=> {
     resetForm({})
-    const {p, r, t} = values 
+    // Destructuring values object
+    let {p, r, t} = values
+    // Changing the rate to 3 decimals to left 
+    r = r * .001
+    // m = p r(1 + r)^n / (1 + r)^n - 1 
     let n = t * 12
     let numerator = 1 + r 
     numerator = numerator ** n 
@@ -34,6 +51,7 @@ const App =(props)=> {
     m = p * numerator / denominator
     m = m.toFixed(2)
     m = Math.round(10 * m) / 10
+    // Check to see if m is a number
     if(!m){
       setError(true)
     } else {
@@ -48,7 +66,7 @@ const App =(props)=> {
     <h1>
     Mortgage Calculator
     </h1>
-
+    {/*Formik form*/}
     <div>
     <Formik initialValues={initialValues} 
     validationSchema={validationSchema} 
@@ -59,19 +77,19 @@ const App =(props)=> {
         <FormikControl
         control='input' 
         autoFocus
-        type='number' 
+        type='text' 
         name='p'
         placeholder='Principal'/>
 
         <FormikControl     
         control='input' 
-        type='number' 
+        type='text' 
         name='r'
         placeholder='Interest Rate'/>
 
         <FormikControl       
         control='input' 
-        type='number' 
+        type='text' 
         name='t'
         placeholder='Term'/>
 
