@@ -111,7 +111,6 @@ const App =(props)=> {
     </Formik>
     </div>
     </div>
-
     </div>
     )
 }
